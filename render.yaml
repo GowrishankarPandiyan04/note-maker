@@ -3,8 +3,6 @@ services:
     name: note-maker-server
     runtime: node
     root: server
-    node:
-      version: 18.17.1
     buildCommand: yarn install
     startCommand: yarn start
     healthCheckPath: /
@@ -19,8 +17,6 @@ services:
     name: note-maker-client
     runtime: static
     root: client
-    node:
-      version: 18.17.1
     buildCommand: yarn install && yarn build
     staticPublishPath: build
     routes:
