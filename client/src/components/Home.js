@@ -204,27 +204,57 @@ const Home = () => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1, p: 4, minHeight: "100vh" }}>
+    <Box sx={{
+      flexGrow: 1,
+      p: 4,
+      minHeight: "100vh",
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)'
+    }}>
       {/* Header */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 3,
+          mb: 4,
+          p: 3,
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: 3,
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
         }}
       >
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          sx={{ display: "flex", alignItems: "center", gap: 1 }}
-        >
-          <EventNoteOutlinedIcon fontSize="medium" />
-          Created Subjects
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+            }}
+          >
+            <EventNoteOutlinedIcon fontSize="medium" />
+          </Box>
+          <Box>
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              sx={{ color: '#1e293b' }}
+            >
+              Welcome back, {name}!
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Manage your subjects and notes
+            </Typography>
+          </Box>
+        </Box>
 
         <Button
-          variant="outlined"
+          variant="contained"
           startIcon={<AddIcon />}
           onClick={() => {
             setFormOpen(true);
@@ -234,17 +264,18 @@ const Home = () => {
             setEditingId(null);
           }}
           sx={{
-            textTransform: "none",
-            px: 2,
-            py: 1,
-            fontWeight: 500,
-            fontSize: "0.95rem",
-            borderRadius: "8px",
-            borderColor: "#1976d2",
-            color: "#1976d2",
-            transition: "all 0.2s ease-in-out",
-            "&:hover": { backgroundColor: "#e3f2fd", borderColor: "#1976d2" },
-            "&:active": { backgroundColor: "#bbdefb" },
+            borderRadius: 3,
+            px: 3,
+            py: 1.5,
+            fontWeight: 600,
+            fontSize: "1rem",
+            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+            boxShadow: '0 4px 14px 0 rgb(99 102 241 / 0.3)',
+            '&:hover': {
+              background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+              boxShadow: '0 6px 20px rgb(99 102 241 / 0.4)',
+              transform: 'translateY(-2px)',
+            },
           }}
         >
           Add Subject
@@ -252,25 +283,40 @@ const Home = () => {
       </Box>
 
       {/* Search */}
-      <TextField
-        placeholder="Search subjects..."
-        variant="outlined"
-        size="small"
-        fullWidth
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        sx={{ mb: 4, "& .MuiOutlinedInput-root": { borderRadius: "50px" } }}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon color="action" />
-            </InputAdornment>
-          ),
-        }}
-      />
+      <Box sx={{ mb: 4 }}>
+        <TextField
+          placeholder="Search subjects..."
+          variant="outlined"
+          size="medium"
+          fullWidth
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 3,
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 2px 4px rgb(0 0 0 / 0.1)',
+              '&:hover': {
+                boxShadow: '0 4px 8px rgb(0 0 0 / 0.15)',
+              },
+              '&.Mui-focused': {
+                boxShadow: '0 0 0 3px rgb(99 102 241 / 0.1)',
+              },
+            },
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: '#64748b' }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
 
       {/* Subjects list */}
-      <Grid
+      <Box
         sx={{
           display: "grid",
           gridTemplateColumns: {
@@ -279,7 +325,7 @@ const Home = () => {
             md: "repeat(3, 1fr)",
             lg: "repeat(4, 1fr)",
           },
-          gap: 4,
+          gap: 3,
           justifyContent: "flex-start",
           alignItems: "flex-start",
         }}
@@ -290,16 +336,26 @@ const Home = () => {
               key={index}
               sx={{
                 position: "relative",
-                minHeight: 180,
-                width: 325,
+                minHeight: 220,
+                width: '100%',
+                maxWidth: 320,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
                 borderRadius: 3,
-                boxShadow: 4,
-                transition: "0.3s",
-                "&:hover": { boxShadow: 10, transform: "translateY(-5px)" },
-                mx: "auto",
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 4,
+                  background: 'linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%)',
+                },
               }}
             >
               {/* Edit Button */}
@@ -313,16 +369,24 @@ const Home = () => {
                 }}
                 sx={{
                   position: "absolute",
-                  top: 8,
-                  right: 8,
+                  top: 12,
+                  right: 12,
                   minWidth: 0,
-                  padding: "4px",
+                  width: 36,
+                  height: 36,
+                  padding: 0,
                   borderRadius: "50%",
-                  color: "#0077B5",
-                  "&:hover": { bgcolor: "#e0f0ff" },
+                  background: 'rgba(255, 255, 255, 0.9)',
+                  color: "#6366f1",
+                  boxShadow: '0 2px 8px rgb(0 0 0 / 0.15)',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 1)',
+                    color: "#4f46e5",
+                    transform: 'scale(1.1)',
+                  },
                 }}
               >
-                <FiEdit color="#0077B5" size={17} />
+                <FiEdit size={18} />
               </Button>
 
               <CardContent
@@ -332,62 +396,86 @@ const Home = () => {
                   flexDirection: "column",
                   alignItems: "flex-start",
                   textAlign: "left",
-                  overflow: "hidden",
+                  p: 3,
+                  pt: 4,
                 }}
               >
-                <Typography variant="h6" gutterBottom noWrap={false}>
-                  <TruncatedText text={item.subjectName || "No Name"} limit={20} />
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    fontWeight: 600,
+                    color: '#1e293b',
+                    mb: 2,
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {item.subjectName || "No Name"}
                 </Typography>
-                <Box display="flex" mb={1} color="text.secondary">
-                  <CalendarTodayIcon sx={{ fontSize: 18, mr: 0.5 }} />
+
+                <Box display="flex" alignItems="center" mb={2} sx={{ color: '#64748b' }}>
+                  <CalendarTodayIcon sx={{ fontSize: 16, mr: 0.5 }} />
                   <Typography variant="body2">
-                    Created on:{" "}
-                    {new Date(item.createdAt || Date.now()).toLocaleString("en-GB", {
-                      dateStyle: "medium",
-                      timeStyle: "short",
+                    {new Date(item.createdAt || Date.now()).toLocaleDateString("en-GB", {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
                     })}
                   </Typography>
                 </Box>
-                <Box display="flex" color="text.secondary">
-                  <Typography variant="body2" color="text.secondary">
-                    <HiOutlineClipboardDocumentList
-                      size={20}
-                      style={{ marginRight: "5px" }}
-                    />
-                    <TruncatedText
-                      text={"Description: " + (item.subjectContent || "No Description")}
-                      limit={30}
-                    />
-                  </Typography>
-                </Box>
+
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: '#64748b',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {item.subjectContent || "No description available"}
+                </Typography>
               </CardContent>
 
               {/* View & Delete */}
-              <CardActions sx={{ p: 2, justifyContent: "center" }}>
+              <CardActions sx={{ p: 3, pt: 0, justifyContent: "space-between", gap: 1 }}>
                 <Button
                   onClick={() => navigate(`/subjects/${item._id}/topics`)}
-                  startIcon={<FiEdit color="#e0ddcf" size={15} />}
+                  variant="contained"
                   sx={{
+                    flex: 1,
                     borderRadius: 2,
-                    px: 3,
-                    backgroundColor: "#3d314a",
-                    color: "#e0ddcf",
-                    textTransform: "none",
-                    "&:hover": { backgroundColor: "#483b56ff" },
+                    py: 1,
+                    fontWeight: 600,
+                    background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+                      transform: 'translateY(-1px)',
+                    },
                   }}
                 >
-                  View
+                  View Topics
                 </Button>
                 <Button
                   onClick={() => handleOpenDelete(index)}
-                  startIcon={<FiTrash2 color="#3d314a" size={15} />}
+                  variant="outlined"
                   sx={{
+                    flex: 1,
                     borderRadius: 2,
-                    px: 3,
-                    backgroundColor: "#d3d0c2ff",
-                    color: "#2d232e",
-                    textTransform: "none",
-                    "&:hover": { backgroundColor: "#e0ddcf" },
+                    py: 1,
+                    fontWeight: 600,
+                    borderColor: '#ef4444',
+                    color: '#ef4444',
+                    '&:hover': {
+                      borderColor: '#dc2626',
+                      backgroundColor: '#fef2f2',
+                      transform: 'translateY(-1px)',
+                    },
                   }}
                 >
                   Delete
@@ -396,24 +484,56 @@ const Home = () => {
             </Card>
           ))
         ) : (
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ mt: 4, mx: "auto", fontStyle: "italic" }}
+          <Box
+            sx={{
+              gridColumn: '1 / -1',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              py: 8,
+              px: 4,
+              background: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: 3,
+              textAlign: 'center',
+            }}
           >
-            No subjects found !
-          </Typography>
+            <EventNoteOutlinedIcon sx={{ fontSize: 64, color: '#cbd5e1', mb: 2 }} />
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{ mb: 1, fontWeight: 500 }}
+            >
+              No subjects found
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {searchQuery ? 'Try adjusting your search terms' : 'Create your first subject to get started'}
+            </Typography>
+          </Box>
         )}
       </Grid>
 
       {/* Add/Edit Dialog */}
-      <Dialog open={formOpen} onClose={() => setFormOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={formOpen}
+        onClose={() => setFormOpen(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+          },
+        }}
+      >
         <DialogTitle
           sx={{
             fontWeight: "bold",
             textAlign: "center",
-            bgcolor: "#f5f5f5",
-            borderBottom: "1px solid #ddd",
+            bgcolor: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+            color: 'white',
+            borderRadius: '12px 12px 0 0',
           }}
         >
           {editingId ? "Edit Subject" : "Add New Subject"}

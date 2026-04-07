@@ -132,7 +132,16 @@ export default function PersistentDrawerLeft({ children }) {
   return (
     <Box sx={{ display: 'flex', bgcolor: "#fafafa" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(10px)',
+          color: '#1e293b',
+          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        }}
+      >
         <Toolbar>
           {/* Menu button (left) */}
           <IconButton
@@ -150,10 +159,18 @@ export default function PersistentDrawerLeft({ children }) {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: 'flex', alignItems: 'center' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              fontWeight: 700,
+              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
           >
-            <ImportContactsOutlinedIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-            Notesmaker
+            <ImportContactsOutlinedIcon sx={{ verticalAlign: 'middle' }} />
+            NotesMaker
           </Typography>
 
           {/* Right side (notifications + account + username) */}
@@ -228,16 +245,22 @@ export default function PersistentDrawerLeft({ children }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            px: 2,
+            px: 3,
+            py: 2,
+            background: 'rgba(255, 255, 255, 0.1)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
           }}
         >
           <Box>
-            {/* <img src="/logo.png" width={100} alt="NotesMaker Logo" /> */}
-            <Typography variant="subtitle1">Welcome, {name}!</Typography>
-            {/* <Typography variant="body2" color="text.secondary">{email || 'No email available'}</Typography> */}
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: 'white' }}>
+              Welcome, {name}!
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+              {email || 'Manage your notes'}
+            </Typography>
           </Box>
 
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose} sx={{ color: 'white' }}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
@@ -247,19 +270,19 @@ export default function PersistentDrawerLeft({ children }) {
         <List>
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/">
-              <ListItemIcon>
+              <ListItemIcon sx={{ color: 'white' }}>
                 <HomeIcon />
               </ListItemIcon>
-              <ListItemText primary="Home" />
+              <ListItemText primary="Home" sx={{ '& .MuiTypography-root': { fontWeight: 500 } }} />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/public/topics">
-              <ListItemIcon>
+              <ListItemIcon sx={{ color: 'white' }}>
                 <SearchIcon />
               </ListItemIcon>
-              <ListItemText primary="Search Topics Online" />
+              <ListItemText primary="Search Topics" sx={{ '& .MuiTypography-root': { fontWeight: 500 } }} />
             </ListItemButton>
           </ListItem>
           
@@ -268,10 +291,10 @@ export default function PersistentDrawerLeft({ children }) {
         {/* Personal dropdown */}
         <ListItem disablePadding>
           <ListItemButton onClick={() => setPersonalOpen(!personalOpen)}>
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: 'white' }}>
               <AccessibilityNewIcon />
             </ListItemIcon>
-            <ListItemText primary="My Activity" />
+            <ListItemText primary="My Activity" sx={{ '& .MuiTypography-root': { fontWeight: 500 } }} />
             {personalOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
@@ -280,19 +303,19 @@ export default function PersistentDrawerLeft({ children }) {
           <List component="div" disablePadding>
             <ListItem disablePadding>
               <ListItemButton sx={{ pl: 4 }} component={Link} to="/saved">
-                <ListItemIcon>
+                <ListItemIcon sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
                   <BookmarkIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary="Saved" />
+                <ListItemText primary="Saved" sx={{ '& .MuiTypography-root': { fontWeight: 500 } }} />
               </ListItemButton>
             </ListItem>
 
             <ListItem disablePadding>
               <ListItemButton sx={{ pl: 4 }} component={Link} to="/liked">
-                <ListItemIcon>
+                <ListItemIcon sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
                   <ThumbUpIcon fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary="Liked" />
+                <ListItemText primary="Liked" sx={{ '& .MuiTypography-root': { fontWeight: 500 } }} />
               </ListItemButton>
             </ListItem>
           </List>
@@ -300,10 +323,10 @@ export default function PersistentDrawerLeft({ children }) {
 
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/calendar">
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: 'white' }}>
               <CalendarTodayIcon />
             </ListItemIcon>
-            <ListItemText primary="Calendar" />
+            <ListItemText primary="Calendar" sx={{ '& .MuiTypography-root': { fontWeight: 500 } }} />
           </ListItemButton>
         </ListItem>
 
@@ -312,10 +335,17 @@ export default function PersistentDrawerLeft({ children }) {
         <List>
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/login" onClick={handleLogout}>
-              <ListItemIcon>
+              <ListItemIcon sx={{ color: 'white' }}>
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary="Logout" secondary={email || 'No email available'} />
+              <ListItemText
+                primary="Logout"
+                secondary={email || 'Sign out'}
+                sx={{
+                  '& .MuiTypography-root': { fontWeight: 500 },
+                  '& .MuiListItemText-secondary': { color: 'rgba(255, 255, 255, 0.7)' }
+                }}
+              />
             </ListItemButton>
           </ListItem>
         </List>
