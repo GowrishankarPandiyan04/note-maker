@@ -5,8 +5,8 @@ services:
     root: server
     node:
       version: 18.17.1
-    buildCommand: yarn install --frozen-lockfile
-    startCommand: npm start
+    buildCommand: yarn install
+    startCommand: yarn start
     healthCheckPath: /
     envVars:
       - key: NODE_ENV
@@ -21,7 +21,7 @@ services:
     root: client
     node:
       version: 18.17.1
-    buildCommand: yarn install --frozen-lockfile && yarn build
+    buildCommand: yarn install && yarn build
     staticPublishPath: build
     routes:
       - type: redirect
