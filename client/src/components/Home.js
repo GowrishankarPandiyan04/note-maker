@@ -297,8 +297,8 @@ const Home = () => {
             lg: "repeat(4, 1fr)",
           },
           gap: 3,
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
+          justifyContent: "center",
+          alignItems: "stretch",
         }}
       >
         {filteredItems.length > 0 ? (
@@ -307,9 +307,8 @@ const Home = () => {
               key={index}
               sx={{
                 position: "relative",
-                minHeight: 220,
-                width: '100%',
-                maxWidth: 320,
+                height: '100%',
+                minHeight: 280,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -343,21 +342,22 @@ const Home = () => {
                   top: 12,
                   right: 12,
                   minWidth: 0,
-                  width: 36,
-                  height: 36,
+                  width: 40,
+                  height: 40,
                   padding: 0,
                   borderRadius: "50%",
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  color: "#6366f1",
-                  boxShadow: '0 2px 8px rgb(0 0 0 / 0.15)',
+                  background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                  color: "#ffffff",
+                  boxShadow: '0 2px 8px rgb(99 102 241 / 0.3)',
+                  zIndex: 10,
                   '&:hover': {
-                    background: 'rgba(255, 255, 255, 1)',
-                    color: "#4f46e5",
+                    background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+                    boxShadow: '0 4px 12px rgb(99 102 241 / 0.5)',
                     transform: 'scale(1.1)',
                   },
                 }}
               >
-                <FiEdit size={18} />
+                <FiEdit size={20} />
               </Button>
 
               <CardContent
