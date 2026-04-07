@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: subject-notes-server
+    name: note-maker-server
     runtime: node
-    buildCommand: cd server && npm install
+    buildCommand: cd server && npm ci
     startCommand: cd server && npm start
     healthCheckPath: /
     envVars:
@@ -13,7 +13,7 @@ services:
       - key: JWT_SECRET
         sync: false
   - type: web
-    name: subject-notes-service
+    name: note-maker-service
     runtime: python3
     buildCommand: cd service-provider && pip install -r requirements.txt
     startCommand: cd service-provider && python app.py
@@ -22,9 +22,9 @@ services:
       - key: GEMINI_API_KEY
         sync: false
   - type: web
-    name: subject-notes-client
+    name: note-maker-client
     runtime: static
-    buildCommand: cd client && npm run build
+    buildCommand: cd client && npm ci && npm run build
     staticPublishPath: client/build
     routes:
       - type: redirect
@@ -34,10 +34,10 @@ services:
       - key: REACT_APP_API_URL
         fromService:
           type: web
-          name: subject-notes-server
+          name: note-maker-server
           property: host
       - key: REACT_APP_SERVICE_URL
         fromService:
           type: web
-          name: subject-notes-service
+          name: note-maker-service
           property: host
