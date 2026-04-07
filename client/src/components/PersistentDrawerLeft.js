@@ -35,7 +35,6 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
 import Collapse from "@mui/material/Collapse";
 
 const drawerWidth = 300;
