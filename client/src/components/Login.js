@@ -30,13 +30,26 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    
+    // Validate fields
+    if (!formData.email.trim()) {
+      setError("Email is required");
+      return;
+    }
+    if (!formData.password) {
+      setError("Password is required");
+      return;
+    }
+    
     try {
       const response = await api.post("/auth", formData);
+      console.log("Login successful:", response.data);
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (err) {
-      console.error(err);
-      setError(err.response?.data || "Invalid email or password");
+      console.error("Login error:", err);
+      const errorMessage = err.response?.data || err.message || "Invalid email or password";
+      setError(errorMessage);
     }
   };
 

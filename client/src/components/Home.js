@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import API from "../api";
 import {
-  Grid,
   Card,
   CardContent,
   CardActions,
@@ -21,38 +20,10 @@ import {
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
+import { FiEdit } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
-
-// Helper component for truncating text
-const TruncatedText = ({ text, limit = 25 }) => {
-  const [expanded, setExpanded] = React.useState(false);
-  if (!text) return "No Name";
-
-  const isTruncated = text.length > limit;
-  const displayText = expanded ? text : text.slice(0, limit);
-
-  return (
-    <span style={{ display: "inline" }}>
-      {displayText}
-      {isTruncated && (
-        <span
-          style={{
-            color: "rgba(0,0,0,0.6)",
-            cursor: "pointer",
-            fontSize: "small",
-          }}
-          onClick={() => setExpanded(!expanded)}
-        >
-          {expanded ? " Show less" : "...more"}
-        </span>
-      )}
-    </span>
-  );
-};
 
 const Home = () => {
   const [subjectName, setSubjectName] = React.useState("");
@@ -512,7 +483,7 @@ const Home = () => {
             </Typography>
           </Box>
         )}
-      </Grid>
+      </Box>
 
       {/* Add/Edit Dialog */}
       <Dialog

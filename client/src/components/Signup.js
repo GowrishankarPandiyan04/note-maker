@@ -35,12 +35,29 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    
+    // Validate fields
+    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+      setError("First name and last name are required");
+      return;
+    }
+    if (!formData.email.trim()) {
+      setError("Email is required");
+      return;
+    }
+    if (!formData.password || formData.password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+    
     try {
-      await api.post("/users", formData);
+      const response = await api.post("/users", formData);
+      console.log("Signup successful:", response.data);
       navigate("/login");
     } catch (err) {
-      console.error(err);
-      setError("Failed to sign up");
+      console.error("Signup error:", err);
+      const errorMessage = err.response?.data || err.message || "Failed to sign up. Please try again.";
+      setError(errorMessage);
     }
   };
 
@@ -137,7 +154,7 @@ const Signup = () => {
 
             {/* Password */}
             <TextField
-              label="Password"
+              label="Password (min 8 characters)"
               name="password"
               type={showPassword ? "text" : "password"}
               value={formData.password}
