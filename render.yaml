@@ -3,6 +3,8 @@ services:
     name: note-maker-server
     runtime: node
     root: server
+    node:
+      version: 20
     buildCommand: yarn install
     startCommand: yarn start
     healthCheckPath: /
