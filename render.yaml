@@ -14,16 +14,6 @@ services:
       - key: JWT_SECRET
         sync: false
   - type: web
-    name: note-maker-service
-    runtime: python
-    root: service-provider
-    buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
-    healthCheckPath: /
-    envVars:
-      - key: GEMINI_API_KEY
-        sync: false
-  - type: web
     name: note-maker-client
     runtime: static
     root: client
@@ -38,9 +28,4 @@ services:
         fromService:
           type: web
           name: note-maker-server
-          property: host
-      - key: REACT_APP_SERVICE_URL
-        fromService:
-          type: web
-          name: note-maker-service
           property: host

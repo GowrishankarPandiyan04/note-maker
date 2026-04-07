@@ -300,15 +300,6 @@ export default function PersistentDrawerLeft({ children }) {
         </Collapse>
 
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/chatbot">
-            <ListItemIcon>
-              <SmartToyOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Chatbot" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
           <ListItemButton component={Link} to="/calendar">
             <ListItemIcon>
               <CalendarTodayIcon />

@@ -12,7 +12,6 @@ import PublicTopicPage from './pages/PublicTopicPage';
 import Saved from './pages/Saved';
 import Liked from './pages/Liked';
 import Calendar from './pages/Calendar';
-import ChatBot from './pages/ChatBot';
 
 function PrivateRoute({ children }) {
   const isLoggedIn = !!localStorage.getItem('token');
@@ -31,7 +30,6 @@ function App() {
         <Route path="/saved" element={<Saved /> } />
         <Route path="/liked" element={<Liked />} />
         <Route path="/calendar" element={<Calendar />} />
-        <Route path="/chatbot" element={<ChatBot />} />
       </Route>
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<Signup />} />
