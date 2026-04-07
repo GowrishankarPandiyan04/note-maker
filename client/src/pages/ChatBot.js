@@ -58,10 +58,10 @@ function ChatBotMUI() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5001/generate_response", {
+      const response = await fetch(`${process.env.REACT_APP_SERVICE_URL || 'http://localhost:5001'}/generate_response`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: userMessage.text }),
+        body: JSON.stringify({ message: userMessage.text }),
       });
 
       const data = await response.json();

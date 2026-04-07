@@ -6,5 +6,13 @@
     {
         "prompt": "hey",
         "text": "Hello! How can I help you today?"
+    },
+    {
+        "prompt": "hi",
+        "text": "You said: hi"
+    },
+    {
+        "prompt": "who is the pm of india",
+        "text": "You said: who is the pm of india"
     }
 ]

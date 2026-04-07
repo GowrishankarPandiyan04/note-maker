@@ -2,12 +2,12 @@ import os
 import json
 import google.generativeai as genai
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Load API Key from .env file
 load_dotenv()
@@ -26,29 +26,37 @@ DATA_FILE = "data.json"
 if not os.path.exists(DATA_FILE):
     with open(DATA_FILE, "w") as f:
         json.dump([], f, indent=4)
+   
 
-
-@app.route("/generate_response", methods=["POST"])
+@app.route("/generate_response", methods=["POST", "OPTIONS"])
 def generate_response():
+
+    if request.method == "OPTIONS":
+        return jsonify({"message": "ok"}), 200
+
     data = request.get_json()
-    user_input = data.get("prompt")
+    user_input = data.get("message")
+
     if not user_input:
         return jsonify({"error": "No input provided"}), 400
 
     try:
-        # Choose model
-        try:
-            model = genai.GenerativeModel("gemini-2.5-flash-preview-09-2025")
-        except Exception:
-            model = genai.GenerativeModel("gemini-2.5-flash")
+        model = genai.GenerativeModel("gemini-1.5-flash")
 
-        # Generate content
-        # response = model.generate_content(user_input)
-        response = model.generate_content(
-            f"Please generate content based on the following input:\n{user_input}"
-        )
-        output_text = getattr(response, "text", "") or str(response)
+        response = model.generate_content(user_input)
 
+        output_text = response.text
+
+    except Exception as e:
+        print("Gemini error:", e)
+        output_text = "Sorry, I couldn't generate a response."
+
+    response_data = {
+        "prompt": user_input,
+        "text": output_text.strip()
+    }
+
+    return jsonify(response_data)
         # Prepare response for frontend
         response_data = {"prompt": user_input, "text": output_text.strip()}
 
@@ -74,5 +82,6 @@ def generate_response():
 
 
 if __name__ == "__main__":
-    debug_mode = os.getenv("FLASK_DEBUG", "True").lower() == "true"
-    app.run(debug=debug_mode, port=5001)
+    port = int(os.environ.get('PORT', 5001))
+    debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
+    app.run(debug=debug_mode, port=port)
