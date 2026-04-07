@@ -17,7 +17,7 @@ services:
     name: note-maker-client
     runtime: static
     root: client
-    buildCommand: yarn install && yarn build
+    buildCommand: npm ci && npm run build
     staticPublishPath: build
     routes:
       - type: redirect
