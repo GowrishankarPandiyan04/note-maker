@@ -2,8 +2,9 @@ services:
   - type: web
     name: note-maker-server
     runtime: node
-    buildCommand: cd server && npm ci
-    startCommand: cd server && npm start
+    root: server
+    buildCommand: npm ci
+    startCommand: npm start
     healthCheckPath: /
     envVars:
       - key: NODE_ENV
@@ -15,8 +16,9 @@ services:
   - type: web
     name: note-maker-service
     runtime: python
-    buildCommand: cd service-provider && pip install -r requirements.txt
-    startCommand: cd service-provider && python app.py
+    root: service-provider
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
     healthCheckPath: /
     envVars:
       - key: GEMINI_API_KEY
@@ -24,8 +26,9 @@ services:
   - type: web
     name: note-maker-client
     runtime: static
-    buildCommand: cd client && npm ci && npm run build
-    staticPublishPath: client/build
+    root: client
+    buildCommand: npm ci && npm run build
+    staticPublishPath: build
     routes:
       - type: redirect
         source: /*
