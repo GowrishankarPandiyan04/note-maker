@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api";
 import { useTheme } from "@mui/material/styles";
@@ -26,7 +26,6 @@ function PublicTopicPage() {
   const { topicId } = useParams();
 
   const [topic, setTopic] = useState(null);
-  const [notes, setNotes] = useState([]);
   const [filteredNotes, setFilteredNotes] = useState([]);
 
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
@@ -42,7 +41,6 @@ function PublicTopicPage() {
         const sortedNotes = res.data.notes.sort(
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
-        setNotes(sortedNotes);
         setFilteredNotes(sortedNotes);
       } catch (err) {
         console.error(err);

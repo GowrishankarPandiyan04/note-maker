@@ -52,6 +52,7 @@ function NotesPage() {
   const [imageDialogSrc, setImageDialogSrc] = React.useState("");
 
   const [sortAnchorEl, setSortAnchorEl] = React.useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [dateRange, setDateRange] = React.useState({ from: "", to: "" });
   const [menuNoteId, setMenuNoteId] = React.useState(null);
 
