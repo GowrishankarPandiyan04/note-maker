@@ -179,7 +179,7 @@ const Home = () => {
       flexGrow: 1,
       p: 4,
       minHeight: "100vh",
-      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)'
+      backgroundColor: '#f8fafc'
     }}>
       {/* Header */}
       <Box
@@ -189,8 +189,7 @@ const Home = () => {
           alignItems: "center",
           mb: 4,
           p: 3,
-          background: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(10px)',
+          backgroundColor: '#ffffff',
           borderRadius: 3,
           boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
         }}
@@ -201,7 +200,7 @@ const Home = () => {
               width: 48,
               height: 48,
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+              background: 'linear-gradient(135deg, #6495ed 0%, #4778d9 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -240,11 +239,11 @@ const Home = () => {
             py: 1.5,
             fontWeight: 600,
             fontSize: "1rem",
-            background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-            boxShadow: '0 4px 14px 0 rgb(99 102 241 / 0.3)',
+            background: 'linear-gradient(135deg, #6495ed 0%, #4778d9 100%)',
+            boxShadow: '0 4px 14px 0 rgb(100 149 237 / 0.3)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
-              boxShadow: '0 6px 20px rgb(99 102 241 / 0.4)',
+              background: 'linear-gradient(135deg, #4778d9 0%, #345bb3 100%)',
+              boxShadow: '0 6px 20px rgb(100 149 237 / 0.4)',
               transform: 'translateY(-2px)',
             },
           }}
@@ -265,14 +264,13 @@ const Home = () => {
           sx={{
             '& .MuiOutlinedInput-root': {
               borderRadius: 3,
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(10px)',
+              backgroundColor: '#ffffff',
               boxShadow: '0 2px 4px rgb(0 0 0 / 0.1)',
               '&:hover': {
                 boxShadow: '0 4px 8px rgb(0 0 0 / 0.15)',
               },
               '&.Mui-focused': {
-                boxShadow: '0 0 0 3px rgb(99 102 241 / 0.1)',
+                boxShadow: '0 0 0 3px rgb(100 149 237 / 0.1)',
               },
             },
           }}
@@ -313,18 +311,12 @@ const Home = () => {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 borderRadius: 3,
-                background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                overflow: 'hidden',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 4,
-                  background: 'linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%)',
+                backgroundColor: '#ffffff',
+                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                transition: "0.3s",
+                '&:hover': {
+                  boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
+                  transform: 'translateY(-4px)',
                 },
               }}
             >
@@ -346,13 +338,13 @@ const Home = () => {
                   height: 40,
                   padding: 0,
                   borderRadius: "50%",
-                  background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                  background: 'linear-gradient(135deg, #6495ed 0%, #4778d9 100%)',
                   color: "#ffffff",
-                  boxShadow: '0 2px 8px rgb(99 102 241 / 0.3)',
+                  boxShadow: '0 2px 8px rgb(100 149 237 / 0.3)',
                   zIndex: 10,
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
-                    boxShadow: '0 4px 12px rgb(99 102 241 / 0.5)',
+                    background: 'linear-gradient(135deg, #4778d9 0%, #345bb3 100%)',
+                    boxShadow: '0 4px 12px rgb(100 149 237 / 0.5)',
                     transform: 'scale(1.1)',
                   },
                 }}
@@ -423,9 +415,9 @@ const Home = () => {
                     borderRadius: 2,
                     py: 1,
                     fontWeight: 600,
-                    background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                    background: 'linear-gradient(135deg, #6495ed 0%, #4778d9 100%)',
                     '&:hover': {
-                      background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+                      background: 'linear-gradient(135deg, #4778d9 0%, #345bb3 100%)',
                       transform: 'translateY(-1px)',
                     },
                   }}
@@ -464,8 +456,7 @@ const Home = () => {
               justifyContent: 'center',
               py: 8,
               px: 4,
-              background: 'rgba(255, 255, 255, 0.8)',
-              backdropFilter: 'blur(10px)',
+              backgroundColor: '#ffffff',
               borderRadius: 3,
               textAlign: 'center',
             }}
@@ -502,7 +493,7 @@ const Home = () => {
           sx={{
             fontWeight: "bold",
             textAlign: "center",
-            bgcolor: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+            bgcolor: 'linear-gradient(135deg, #6495ed 0%, #4778d9 100%)',
             color: 'white',
             borderRadius: '12px 12px 0 0',
           }}

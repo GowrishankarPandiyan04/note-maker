@@ -2,15 +2,14 @@ import * as React from "react";
 import {
   Container,
   Typography,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
+  Grid,
+  Card,
+  CardContent,
+  CardActions,
   Button,
   Box,
   IconButton,
   useMediaQuery,
-  Paper,
   TextField,
   InputAdornment,
   Snackbar,
@@ -177,22 +176,24 @@ function TopicsPage() {
   );
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 2, mb: 2, px: isMobile ? 1 : 3 }}>
-      <Typography
-        variant={isMobile ? "h6" : "h5"}
-        gutterBottom
-        sx={{
-          fontWeight: "bold",
-          fontFamily: "Arial",
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          justifyContent: isMobile ? "center" : "flex-start",
-        }}
-      >
-        <TopicOutlinedIcon fontSize="medium" />
-        Topics
-      </Typography>
+    <Box sx={{ backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc', minHeight: '100vh', py: 2 }}>
+      <Container maxWidth="lg" sx={{ mt: 2, mb: 2, px: isMobile ? 1 : 3 }}>
+        <Typography
+          variant={isMobile ? "h6" : "h5"}
+          gutterBottom
+          sx={{
+            fontWeight: "bold",
+            fontFamily: "Arial",
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            justifyContent: isMobile ? "center" : "flex-start",
+            color: theme.palette.text.primary,
+          }}
+        >
+          <TopicOutlinedIcon fontSize="medium" />
+          Topics
+        </Typography>
 
       {/* Search */}
       <TextField
@@ -212,68 +213,92 @@ function TopicsPage() {
       />
 
       {/* Topics List */}
-      <Paper
-        elevation={4}
-        sx={{
-          borderRadius: 3,
-          boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
-          height: 420,
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-        }}
-      >
+      <Grid container spacing={4} justifyContent="flex-start" sx={{ mb: 4 }}>
         {filteredTopics.length > 0 ? (
-          <List sx={{ overflowY: "auto" }}>
-            {filteredTopics.map((topic, index) => (
-              <ListItem
-                key={topic._id}
+          filteredTopics.map((topic) => (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              key={topic._id}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <Card
                 sx={{
-                  borderBottom: index !== filteredTopics.length - 1 ? "1px solid #e0eaf1" : "none",
+                  minHeight: 180,
+                  width: 325,
                   display: "flex",
+                  flexDirection: "column",
                   justifyContent: "space-between",
-                  alignItems: "center",
+                  borderRadius: 3,
+                  boxShadow: theme.palette.mode === 'dark' 
+                    ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3)'
+                    : '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                  backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
+                  transition: "0.3s",
+                  "&:hover": { 
+                    boxShadow: theme.palette.mode === 'dark'
+                      ? '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4)'
+                      : '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+                    transform: "translateY(-5px)" 
+                  },
                 }}
               >
-                <ListItemButton
-                  sx={{ flex: 1 }}
+                <CardContent
+                  sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    textAlign: "left",
+                    color: theme.palette.text.primary,
+                    cursor: "pointer",
+                  }}
                   onClick={() => navigate(`/topics/${topic._id}/notes`)}
                 >
-                  <ListItemText
-                    primary={topic.title}
-                    secondary={`Created on: ${new Date(topic.createdAt).toLocaleString(undefined, {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })}`}
-                  />
-                </ListItemButton>
+                  <Typography variant="h6" gutterBottom sx={{ color: theme.palette.text.primary, fontWeight: 600 }}>
+                    {topic.title}
+                  </Typography>
 
-                {/* Action icons */}
-                <Box sx={{ display: "flex", gap: 1 }}>
-                  <IconButton color="primary" onClick={() => navigate(`/topics/${topic._id}/notes`)}>
-                    <VisibilityIcon />
-                  </IconButton>
+                  <Box display="flex" mb={1} color={theme.palette.text.secondary}>
+                    <Typography variant="body2">
+                      Created At:{" "}
+                      {new Date(topic.createdAt).toLocaleString(undefined, {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
+                    </Typography>
+                  </Box>
+                </CardContent>
 
-                  {/* Publish/Unpublish */}
-                  <IconButton
-                    color={topic.published ? "success" : "default"}
-                    onClick={() => handleOpenPublishDialog(topic)}
-                    title={topic.published ? "Unpublish" : "Publish"}
-                  >
-                    {topic.published ? <UnpublishedIcon /> : <PublishIcon />}
-                  </IconButton>
+                <CardActions sx={{ p: 2, justifyContent: "space-between", borderTop: "1px solid", borderColor: theme.palette.divider }}>
+                  <Box sx={{ display: "flex", gap: 0.5 }}>
+                    <IconButton size="small" color="primary" onClick={() => navigate(`/topics/${topic._id}/notes`)}>
+                      <VisibilityIcon fontSize="small" />
+                    </IconButton>
 
-                  <IconButton color="secondary" onClick={() => handleOpenEdit(topic)}>
-                    <FiEdit color="#1976d2" size={20} />
-                  </IconButton>
+                    <IconButton
+                      size="small"
+                      color={topic.published ? "success" : "default"}
+                      onClick={() => handleOpenPublishDialog(topic)}
+                      title={topic.published ? "Unpublish" : "Publish"}
+                    >
+                      {topic.published ? <UnpublishedIcon fontSize="small" /> : <PublishIcon fontSize="small" />}
+                    </IconButton>
 
-                  <IconButton color="error" onClick={() => handleOpenDelete(topic._id)}>
-                    <FiTrash2 color="#bb2124" size={20} />
-                  </IconButton>
-                </Box>
-              </ListItem>
-            ))}
-          </List>
+                    <IconButton size="small" color="secondary" onClick={() => handleOpenEdit(topic)}>
+                      <FiEdit color="#1976d2" size={18} />
+                    </IconButton>
+
+                    <IconButton size="small" color="error" onClick={() => handleOpenDelete(topic._id)}>
+                      <FiTrash2 color="#bb2124" size={18} />
+                    </IconButton>
+                  </Box>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))
         ) : (
           <Box
             sx={{
@@ -283,12 +308,14 @@ function TopicsPage() {
               justifyContent: "center",
               color: "text.secondary",
               fontStyle: "italic",
+              width: "100%",
+              mt: 4
             }}
           >
             No topics found!
           </Box>
         )}
-      </Paper>
+      </Grid>
 
       {/* Add Topic */}
       <Box
@@ -399,7 +426,8 @@ function TopicsPage() {
       >
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
-    </Container>
+      </Container>
+    </Box>
   );
 }
 

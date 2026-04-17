@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import API from "../api";
+import { useTheme } from "@mui/material/styles";
 import {
   Container,
   Typography,
@@ -21,6 +22,7 @@ import PublicOffOutlinedIcon from '@mui/icons-material/PublicOffOutlined';
 const BASE_URL = process.env.REACT_APP_API_URL;
 
 function PublicTopicPage() {
+  const theme = useTheme();
   const { topicId } = useParams();
 
   const [topic, setTopic] = useState(null);
@@ -53,33 +55,35 @@ function PublicTopicPage() {
 
   if (!topic)
   return (
-    <Container maxWidth="sm" sx={{ mt: 8, textAlign: "center" }}>
-      <Box
-        sx={{
-          p: 5,
-          borderRadius: 3,
-          backgroundColor: "#fcdcdc", // light error background
-          border: "1px solid #f28b82", // soft red border
-          color: "#2d232e", // your main palette for text
-          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-        }}
-      >
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          gutterBottom
-          sx={{ mb: 2 }}
+    <Box sx={{ backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc', minHeight: '100vh', py: 4 }}>
+      <Container maxWidth="sm" sx={{ mt: 8, textAlign: "center" }}>
+        <Box
+          sx={{
+            p: 5,
+            borderRadius: 3,
+            backgroundColor: "#fcdcdc", // light error background
+            border: "1px solid #f28b82", // soft red border
+            color: "#2d232e", // your main palette for text
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          }}
         >
-          <PublicOffOutlinedIcon fontSize="medium" /> {" "}
-          Topic Unavailable !
-        </Typography>
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            gutterBottom
+            sx={{ mb: 2 }}
+          >
+            <PublicOffOutlinedIcon fontSize="medium" /> {" "}
+            Topic Unavailable !
+          </Typography>
 
-        <Typography variant="body1" sx={{ fontSize: "1rem", lineHeight: 1.6 }}>
-          This topic has been unpublished by the user. <br />
-          You will be able to view it once it is published again !.
-        </Typography>
-      </Box>
-    </Container>
+          <Typography variant="body1" sx={{ fontSize: "1rem", lineHeight: 1.6 }}>
+            This topic has been unpublished by the user. <br />
+            You will be able to view it once it is published again !.
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 
 
@@ -95,19 +99,20 @@ function PublicTopicPage() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      {/* Topic Header */}
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        {topic.title}
-      </Typography>
-      <Typography variant="body2" color="text.secondary" gutterBottom>
-        Created At: {new Date(topic.createdAt).toLocaleDateString("en-GB")} | Created By:{" "}
-        {topic.userId
-          ? `${topic.userId.firstName} ${topic.userId.lastName}`
-          : "Unknown"}
-      </Typography>
+    <Box sx={{ backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc', minHeight: '100vh', py: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        {/* Topic Header */}
+        <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ color: theme.palette.text.primary }}>
+          {topic.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          Created At: {new Date(topic.createdAt).toLocaleDateString("en-GB")} | Created By:{" "}
+          {topic.userId
+            ? `${topic.userId.firstName} ${topic.userId.lastName}`
+            : "Unknown"}
+        </Typography>
 
-      {/* Notes List */}
+        {/* Notes List */}
       <Paper
         elevation={4}
         sx={{
@@ -217,7 +222,8 @@ function PublicTopicPage() {
       >
         <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
       </Snackbar>
-    </Container>
+      </Container>
+    </Box>
   );
 }
 

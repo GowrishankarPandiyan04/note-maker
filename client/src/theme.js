@@ -1,19 +1,20 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+export const lightTheme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
-      main: '#6366f1', // Indigo
-      light: '#818cf8',
-      dark: '#4f46e5',
+      main: '#000000', // Black
+      light: '#333333',
+      dark: '#000000',
     },
     secondary: {
-      main: '#ec4899', // Pink
-      light: '#f472b6',
-      dark: '#db2777',
+      main: '#6495ed', // Cornflower blue
+      light: '#8eb3ff',
+      dark: '#4778d9',
     },
     background: {
-      default: '#f8fafc',
+      default: '#f4f6f8',
       paper: '#ffffff',
     },
     text: {
@@ -84,7 +85,7 @@ const theme = createTheme({
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #000000 0%, #434343 100%)',
           color: 'white',
         },
       },
@@ -106,4 +107,111 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+export const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#ffffff', // White
+      light: '#ffffff',
+      dark: '#cccccc',
+    },
+    secondary: {
+      main: '#6495ed', // Cornflower blue
+      light: '#8eb3ff',
+      dark: '#4778d9',
+    },
+    background: {
+      default: '#000000',
+      paper: '#111111',
+    },
+    text: {
+      primary: '#f1f5f9',
+      secondary: '#cbd5e1',
+    },
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h4: {
+      fontWeight: 700,
+      fontSize: '2rem',
+    },
+    h5: {
+      fontWeight: 600,
+      fontSize: '1.5rem',
+    },
+    h6: {
+      fontWeight: 600,
+      fontSize: '1.25rem',
+    },
+    body1: {
+      fontSize: '1rem',
+      lineHeight: 1.6,
+    },
+  },
+  shape: {
+    borderRadius: 12,
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4)',
+            transform: 'translateY(-4px)',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: 600,
+          borderRadius: 8,
+          padding: '8px 16px',
+        },
+        contained: {
+          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3)',
+          '&:hover': {
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3)',
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            borderRadius: 8,
+          },
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          background: 'linear-gradient(135deg, #111111 0%, #000000 100%)',
+          color: 'white',
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          margin: '4px 8px',
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          },
+          '&.Mui-selected': {
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+          },
+        },
+      },
+    },
+  },
+});
+
+export default lightTheme;

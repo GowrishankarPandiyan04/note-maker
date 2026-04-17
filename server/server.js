@@ -14,6 +14,7 @@ const authRoutes = require('./routes/auth');
 const subjectRoutes = require('./routes/subjects');
 const topicRoutes = require('./routes/topicRoutes');
 const noteRoutes = require("./routes/noteRoutes");
+const chatRoutes  = require("./routes/chat");
 
 // Models
 const { User } = require('./models/user');
@@ -27,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/subjects', subjectRoutes);
 app.use('/api/topics', topicRoutes);
 app.use("/api/notes", noteRoutes);
+app.use("/api/chat", chatRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Root

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api";
+import { useTheme } from "@mui/material/styles";
 import {
   Grid,
   Card,
@@ -11,12 +12,17 @@ import {
   Checkbox,
   Snackbar,
   Alert,
+  TextField,
+  InputAdornment,
+  Button
 } from "@mui/material";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import SearchIcon from "@mui/icons-material/Search";
+import SortIcon from "@mui/icons-material/Sort";
 
 const TruncatedText = ({ text, limit = 40 }) => {
   const [expanded, setExpanded] = useState(false);
@@ -45,7 +51,11 @@ const TruncatedText = ({ text, limit = 40 }) => {
 };
 
 function Liked() {
+  const theme = useTheme();
   const [likedTopics, setLikedTopics] = useState([]);
+  const [filteredTopics, setFilteredTopics] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortAsc, setSortAsc] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -56,7 +66,9 @@ function Liked() {
         const res = await API.get("/topics/liked", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setLikedTopics(res.data.filter(Boolean));
+        const topics = res.data.filter(Boolean);
+        setLikedTopics(topics);
+        setFilteredTopics(topics);
       } catch (err) {
         console.error("Error fetching liked topics:", err);
       }
@@ -65,15 +77,33 @@ function Liked() {
     fetchLikedTopics();
   }, []);
 
-  // Like/unlike → remove from list if unliked
+  // Search logic
+  useEffect(() => {
+    const filtered = likedTopics.filter((topic) =>
+      topic.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    // Maintain current sort order
+    let sorted = [...filtered];
+    sorted.sort((a, b) =>
+      sortAsc
+        ? new Date(a.createdAt) - new Date(b.createdAt)
+        : new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setFilteredTopics(sorted);
+  }, [searchTerm, likedTopics, sortAsc]);
+
+  // Sort logic
+  const handleSortByDate = () => {
+    setSortAsc(!sortAsc);
+  };
+
+  // Like/unlike
   const handleLike = async (topicId) => {
     try {
       const res = await API.put(`/topics/${topicId}/like`);
       if (!res.data.liked) {
-        // user unliked → remove from list
         setLikedTopics((prev) => prev.filter((t) => t._id !== topicId));
       } else {
-        // otherwise update count
         setLikedTopics((prev) =>
           prev.map((t) =>
             t && t._id === topicId
@@ -89,7 +119,7 @@ function Liked() {
     }
   };
 
-  // Save/unsave toggle
+  // Save/unsave
   const handleSave = async (topicId) => {
     try {
       const res = await API.put(`/topics/${topicId}/save`);
@@ -108,19 +138,53 @@ function Liked() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, p: 4, minHeight: "100vh" }}>
-      <Typography
-        variant="h5"
-        fontWeight="bold"
-        sx={{ mb: 3, display: "flex", alignItems: "center", gap: 1 }}
+    <Box sx={{ flexGrow: 1, p: 4, minHeight: "100vh", backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc' }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
       >
-        <FavoriteOutlinedIcon color="error" />
-        Liked Topics
-      </Typography>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          sx={{ display: "flex", alignItems: "center", gap: 1, color: theme.palette.text.primary }}
+        >
+          <FavoriteOutlinedIcon color="error" />
+          Liked Topics
+        </Typography>
+
+        <Button
+          variant="outlined"
+          startIcon={<SortIcon />}
+          onClick={handleSortByDate}
+        >
+          Sort
+        </Button>
+      </Box>
+
+      {/* Search bar */}
+      <TextField
+        fullWidth
+        size="small"
+        placeholder="Search liked topics..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon color="action" />
+            </InputAdornment>
+          ),
+        }}
+        sx={{ mb: 3, "& .MuiOutlinedInput-root": { borderRadius: "50px", backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff' } }}
+      />
 
       <Grid container spacing={4} justifyContent="flex-start">
-        {likedTopics.length > 0 ? (
-          likedTopics.map(
+        {filteredTopics.length > 0 ? (
+          filteredTopics.map(
             (topic) =>
               topic && (
                 <Grid
@@ -140,9 +204,17 @@ function Liked() {
                       flexDirection: "column",
                       justifyContent: "space-between",
                       borderRadius: 3,
-                      boxShadow: 4,
+                      boxShadow: theme.palette.mode === 'dark' 
+                        ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3)'
+                        : '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                      backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
                       transition: "0.3s",
-                      "&:hover": { boxShadow: 10, transform: "translateY(-5px)" },
+                      "&:hover": { 
+                        boxShadow: theme.palette.mode === 'dark'
+                          ? '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4)'
+                          : '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+                        transform: "translateY(-5px)" 
+                      },
                     }}
                   >
                     <CardContent
@@ -152,26 +224,31 @@ function Liked() {
                         flexDirection: "column",
                         textAlign: "left",
                         overflow: "hidden",
+                        color: theme.palette.text.primary,
                       }}
                     >
-                      <Typography variant="h6" gutterBottom>
+                      <Typography variant="h6" gutterBottom sx={{ color: theme.palette.text.primary }}>
                         <TruncatedText text={topic.title || "No Title"} limit={30} />
                       </Typography>
 
-                      <Typography variant="body2" color="text.secondary">
-                        Created At:{" "}
-                        {new Date(topic.createdAt).toLocaleString("en-GB", {
-                          dateStyle: "medium",
-                          timeStyle: "short",
-                        })}
-                      </Typography>
+                      <Box display="flex" mb={1} color={theme.palette.text.secondary}>
+                        <Typography variant="body2">
+                          Created At:{" "}
+                          {new Date(topic.createdAt).toLocaleString("en-GB", {
+                            dateStyle: "medium",
+                            timeStyle: "short",
+                          })}
+                        </Typography>
+                      </Box>
 
-                      <Typography variant="body2" color="text.secondary">
-                        Created By:{" "}
-                        {topic.userId
-                          ? `${topic.userId.firstName} ${topic.userId.lastName}`
-                          : "Unknown"}
-                      </Typography>
+                      <Box display="flex" color="text.secondary">
+                        <Typography variant="body2">
+                          Created By:{" "}
+                          {topic.userId
+                            ? `${topic.userId.firstName} ${topic.userId.lastName}`
+                            : "Unknown"}
+                        </Typography>
+                      </Box>
 
                       <Box display="flex" mt={1} color="text.secondary">
                         <Typography variant="body2" sx={{ mr: 2 }}>

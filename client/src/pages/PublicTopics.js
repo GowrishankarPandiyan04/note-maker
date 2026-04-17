@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api";
+import { useTheme } from "@mui/material/styles";
 import {
   Grid,
   Card,
@@ -52,6 +53,7 @@ const TruncatedText = ({ text, limit = 40 }) => {
 };
 
 function PublicTopics() {
+  const theme = useTheme();
   const [topics, setTopics] = useState([]);
   const [filteredTopics, setFilteredTopics] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -150,7 +152,7 @@ function PublicTopics() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, p: 4, minHeight: "100vh" }}>
+    <Box sx={{ flexGrow: 1, p: 4, minHeight: "100vh", backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc' }}>
       {/* Header with sort button */}
       <Box
         sx={{
@@ -218,9 +220,17 @@ function PublicTopics() {
                       flexDirection: "column",
                       justifyContent: "space-between",
                       borderRadius: 3,
-                      boxShadow: 4,
+                      boxShadow: theme.palette.mode === 'dark' 
+                        ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3)'
+                        : '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                      backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
                       transition: "0.3s",
-                      "&:hover": { boxShadow: 10, transform: "translateY(-5px)" },
+                      "&:hover": { 
+                        boxShadow: theme.palette.mode === 'dark'
+                          ? '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4)'
+                          : '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+                        transform: "translateY(-5px)" 
+                      },
                     }}
                   >
                     <CardContent
@@ -230,13 +240,14 @@ function PublicTopics() {
                         flexDirection: "column",
                         textAlign: "left",
                         overflow: "hidden",
+                        color: theme.palette.text.primary,
                       }}
                     >
-                      <Typography variant="h6" gutterBottom>
+                      <Typography variant="h6" gutterBottom sx={{ color: theme.palette.text.primary }}>
                         <TruncatedText text={topic.title || "No Title"} limit={30} />
                       </Typography>
 
-                      <Box display="flex" mb={1} color="text.secondary">
+                      <Box display="flex" mb={1} color={theme.palette.text.secondary}>
                         <Typography variant="body2">
                           Created At:{" "}
                           {new Date(topic.createdAt || Date.now()).toLocaleDateString(

@@ -18,6 +18,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import SortIcon from "@mui/icons-material/Sort";
 import CloseIcon from "@mui/icons-material/Close";
@@ -27,6 +28,7 @@ import API from "../api";
 import { useParams } from "react-router-dom";
 
 function NotesPage() {
+  const theme = useTheme();
   const { id: topicId } = useParams();
   const BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -222,22 +224,23 @@ function NotesPage() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 2, mb: 2 }}>
-      {/* Header */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 2,
-        }}
-      >
-        <Typography
-          variant="h5"
+    <Box sx={{ backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc', minHeight: '100vh', py: 2 }}>
+      <Container maxWidth="lg" sx={{ mt: 2, mb: 2 }}>
+        {/* Header */}
+        <Box
           sx={{
-            fontWeight: "bold",
-            fontFamily: "Arial",
             display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "bold",
+              fontFamily: "Arial",
+              display: "flex",
             alignItems: "center",
             gap: 1,
           }}
@@ -600,7 +603,8 @@ function NotesPage() {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Container>
+      </Container>
+    </Box>
   );
 }
 

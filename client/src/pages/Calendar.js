@@ -217,155 +217,156 @@ function MyCalendar({ drawerOpen }) {
   };
 
   return (
-    <Container
-      maxWidth={false}
-      disableGutters
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: isMobile ? "75vh" : "78vh",
-        width: "100%",
-        overflow: "hidden",
-        px: isMobile ? 1 : 4,
-        py: 2,
-      }}
-    >
-      <Paper
-        elevation={4}
+    <Box sx={{ backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc', minHeight: '100vh', py: 2 }}>
+      <Container
+        maxWidth={false}
+        disableGutters
         sx={{
-          borderRadius: 4,
-          p: isMobile ? 2 : 3,
-          background: "linear-gradient(145deg, #f5f5f5, #ffffff)",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+          display: 'flex',
+          flexDirection: 'column',
+          height: isMobile ? '75vh' : '78vh',
+          width: '100%',
+          overflow: 'hidden',
+          px: isMobile ? 1 : 4,
+          py: 2,
         }}
       >
-
-        <CustomToolbar date={date} onDateChange={setDate} />
-
-        <Box
+        <Paper
+          elevation={4}
           sx={{
-            flex: "1 1 0",
-            width: drawerOpen ? `calc(100% - ${drawerWidth / 2}px)` : "95%",
-            height: isMobile ? "58vh" : "62vh",
-            mx: "auto",
-            borderRadius: 3,
-            overflow: "hidden",
-            transition: "width 0.3s ease",
-            "& .rbc-calendar": {
-              backgroundColor: "#fff",
-              borderRadius: "12px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            },
-            "& .rbc-header": {
-              backgroundColor: "#3d314a",
-              color: "#e0ddcf",
-              fontWeight: 600,
-              fontFamily: "'Poppins', sans-serif",
-              padding: "6px",
-              fontSize: "0.9rem",
-            },
-            "& .rbc-today": {
-              backgroundColor: "rgba(108,92,231,0.1)",
-            },
+            borderRadius: 4,
+            p: isMobile ? 2 : 3,
+            background: theme.palette.mode === 'dark'
+              ? 'linear-gradient(145deg, #1e293b, #0f172a)'
+              : 'linear-gradient(145deg, #f5f5f5, #ffffff)',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
           }}
         >
-          <BigCalendar
-            key={windowWidth}
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            defaultView="month"
-            views={["month"]}
-            date={date}
-            onNavigate={setDate}
-            style={{ height: "100%", width: "100%" }}
-            eventPropGetter={eventStyleGetter}
-            components={{ event: EventComponent }}
-            onSelectEvent={handleSelectEvent}
-            popup
-          />
-        </Box>
-      </Paper>
+          <CustomToolbar date={date} onDateChange={setDate} />
 
-      {/* Event Dialog */}
-      <Dialog
-        open={Boolean(selectedEvent)}
-        onClose={handleCloseDialog}
-        fullWidth
-        maxWidth="xs"
-        PaperProps={{
-          sx: {
-            borderRadius: "16px",
-            p: 1,
-            background: "linear-gradient(135deg, #ffffff, #f9f9f9)",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            fontFamily: "'Poppins', sans-serif",
-            fontWeight: 700,
-            textAlign: "center",
-            color: selectedEvent?.type === "subject" ? "#6C5CE7" : "#FD79A8",
-          }}
-        >
-          {selectedEvent?.title}
-        </DialogTitle>
-
-        <DialogContent
-          sx={{
-            textAlign: "center",
-            fontFamily: "'Poppins', sans-serif",
-            fontSize: "0.95rem",
-            color: "#2d3436",
-          }}
-        >
-          {selectedEvent?.type === "subject"
-            ? "View all subjects and their topics on the home page."
-            : "Open this topic to view or edit your notes."}
-        </DialogContent>
-
-        <DialogActions
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            pb: 2,
-          }}
-        >
-          <Button
-            onClick={handleGoTo}
-            variant="contained"
+          <Box
             sx={{
-              backgroundColor:
-                selectedEvent?.type === "subject" ? "#6C5CE7" : "#FD79A8",
-              color: "#fff",
-              textTransform: "none",
-              fontFamily: "'Poppins', sans-serif",
-              px: 3,
-              "&:hover": { opacity: 0.9 },
+              flex: '1 1 0',
+              width: drawerOpen ? `calc(100% - ${drawerWidth / 2}px)` : '95%',
+              height: isMobile ? '58vh' : '62vh',
+              mx: 'auto',
+              borderRadius: 3,
+              overflow: 'hidden',
+              transition: 'width 0.3s ease',
+              '& .rbc-calendar': {
+                backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              },
+              '& .rbc-header': {
+                backgroundColor: '#3d314a',
+                color: '#e0ddcf',
+                fontWeight: 600,
+                fontFamily: "'Poppins', sans-serif",
+                padding: '6px',
+                fontSize: '0.9rem',
+              },
+              '& .rbc-today': {
+                backgroundColor: 'rgba(108,92,231,0.1)',
+              },
             }}
           >
-            {selectedEvent?.type === "subject"
-              ? "Go to Subject"
-              : "Go to Topic"}
-          </Button>
+            <BigCalendar
+              key={windowWidth}
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              defaultView="month"
+              views={["month"]}
+              date={date}
+              onNavigate={setDate}
+              style={{ height: '100%', width: '100%' }}
+              eventPropGetter={eventStyleGetter}
+              components={{ event: EventComponent }}
+              onSelectEvent={handleSelectEvent}
+              popup
+            />
+          </Box>
+        </Paper>
 
-          <Button
-            onClick={handleCloseDialog}
-            variant="outlined"
+        {/* Event Dialog */}
+        <Dialog
+          open={Boolean(selectedEvent)}
+          onClose={handleCloseDialog}
+          fullWidth
+          maxWidth="xs"
+          PaperProps={{
+            sx: {
+              borderRadius: '16px',
+              p: 1,
+              background: 'linear-gradient(135deg, #ffffff, #f9f9f9)',
+            },
+          }}
+        >
+          <DialogTitle
             sx={{
-              textTransform: "none",
               fontFamily: "'Poppins', sans-serif",
-              borderColor: "#b2bec3",
-              color: "#636e72",
+              fontWeight: 700,
+              textAlign: 'center',
+              color: selectedEvent?.type === 'subject' ? '#6C5CE7' : '#FD79A8',
             }}
           >
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+            {selectedEvent?.title}
+          </DialogTitle>
+
+          <DialogContent
+            sx={{
+              textAlign: 'center',
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: '0.95rem',
+              color: '#2d3436',
+            }}
+          >
+            {selectedEvent?.type === 'subject'
+              ? 'View all subjects and their topics on the home page.'
+              : 'Open this topic to view or edit your notes.'}
+          </DialogContent>
+
+          <DialogActions
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              pb: 2,
+            }}
+          >
+            <Button
+              onClick={handleGoTo}
+              variant="contained"
+              sx={{
+                backgroundColor:
+                  selectedEvent?.type === 'subject' ? '#6C5CE7' : '#FD79A8',
+                color: '#fff',
+                textTransform: 'none',
+                fontFamily: "'Poppins', sans-serif",
+                px: 3,
+                '&:hover': { opacity: 0.9 },
+              }}
+            >
+              {selectedEvent?.type === 'subject' ? 'Go to Subject' : 'Go to Topic'}
+            </Button>
+
+            <Button
+              onClick={handleCloseDialog}
+              variant="outlined"
+              sx={{
+                textTransform: 'none',
+                fontFamily: "'Poppins', sans-serif",
+                borderColor: '#b2bec3',
+                color: '#636e72',
+              }}
+            >
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Container>
+    </Box>
   );
 }
 

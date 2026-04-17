@@ -7,16 +7,26 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import "react-quill/dist/quill.snow.css";
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
+import { ThemeContextProvider } from './ThemeContext';
+import { useThemeContext } from './ThemeContext';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
+function ThemedApp() {
+  const { theme } = useThemeContext();
+  return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </ThemeProvider>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <ThemeContextProvider>
+      <ThemedApp />
+    </ThemeContextProvider>
   </React.StrictMode>
 );
 

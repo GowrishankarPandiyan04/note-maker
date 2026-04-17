@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../api";
+import { useTheme } from "@mui/material/styles";
 import {
   Grid,
   Card,
@@ -11,14 +12,18 @@ import {
   Checkbox,
   Snackbar,
   Alert,
+  TextField,
+  InputAdornment,
+  Button
 } from "@mui/material";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
+import SearchIcon from "@mui/icons-material/Search";
+import SortIcon from "@mui/icons-material/Sort";
 
-// Truncated text component
 const TruncatedText = ({ text, limit = 40 }) => {
   const [expanded, setExpanded] = useState(false);
   if (!text) return "No Title";
@@ -46,7 +51,11 @@ const TruncatedText = ({ text, limit = 40 }) => {
 };
 
 function Saved() {
+  const theme = useTheme();
   const [savedTopics, setSavedTopics] = useState([]);
+  const [filteredTopics, setFilteredTopics] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortAsc, setSortAsc] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -57,7 +66,9 @@ function Saved() {
         const res = await API.get("/topics/saved", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setSavedTopics(res.data.filter(Boolean));
+        const topics = res.data.filter(Boolean);
+        setSavedTopics(topics);
+        setFilteredTopics(topics);
       } catch (err) {
         console.error("Error fetching saved topics:", err);
       }
@@ -65,6 +76,26 @@ function Saved() {
 
     fetchSavedTopics();
   }, []);
+
+  // Search logic
+  useEffect(() => {
+    const filtered = savedTopics.filter((topic) =>
+      topic.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    // Maintain sort order
+    let sorted = [...filtered];
+    sorted.sort((a, b) =>
+      sortAsc
+        ? new Date(a.createdAt) - new Date(b.createdAt)
+        : new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setFilteredTopics(sorted);
+  }, [searchTerm, savedTopics, sortAsc]);
+
+  // Sort logic
+  const handleSortByDate = () => {
+    setSortAsc(!sortAsc);
+  };
 
   // Like/unlike
   const handleLike = async (topicId) => {
@@ -84,15 +115,13 @@ function Saved() {
     }
   };
 
-  // Save/unsave (remove from list if unsaved)
+  // Save/unsave
   const handleSave = async (topicId) => {
     try {
       const res = await API.put(`/topics/${topicId}/save`);
       if (!res.data.saved) {
-        // if unsaved → remove from list
         setSavedTopics((prev) => prev.filter((t) => t._id !== topicId));
       } else {
-        // otherwise update count
         setSavedTopics((prev) =>
           prev.map((t) =>
             t && t._id === topicId
@@ -109,21 +138,53 @@ function Saved() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, p: 4, minHeight: "100vh" }}>
-
-      <Typography
-        variant="h5"
-        fontWeight="bold"
-        sx={{ mb: 3, display: "flex", alignItems: "center", gap: 1 }}
+    <Box sx={{ flexGrow: 1, p: 4, minHeight: "100vh", backgroundColor: theme.palette.mode === 'dark' ? '#0f172a' : '#f8fafc' }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
       >
-        <BookmarkAddedOutlinedIcon fontSize="medium" />
-        Saved Topics
-      </Typography>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          sx={{ display: "flex", alignItems: "center", gap: 1, color: theme.palette.text.primary }}
+        >
+          <BookmarkAddedOutlinedIcon fontSize="medium" />
+          Saved Topics
+        </Typography>
 
+        <Button
+          variant="outlined"
+          startIcon={<SortIcon />}
+          onClick={handleSortByDate}
+        >
+          Sort
+        </Button>
+      </Box>
+
+      {/* Search bar */}
+      <TextField
+        fullWidth
+        size="small"
+        placeholder="Search saved topics..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon color="action" />
+            </InputAdornment>
+          ),
+        }}
+        sx={{ mb: 3, "& .MuiOutlinedInput-root": { borderRadius: "50px", backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff' } }}
+      />
 
       <Grid container spacing={4} justifyContent="flex-start">
-        {savedTopics.length > 0 ? (
-          savedTopics.map(
+        {filteredTopics.length > 0 ? (
+          filteredTopics.map(
             (topic) =>
               topic && (
                 <Grid
@@ -143,9 +204,17 @@ function Saved() {
                       flexDirection: "column",
                       justifyContent: "space-between",
                       borderRadius: 3,
-                      boxShadow: 4,
+                      boxShadow: theme.palette.mode === 'dark' 
+                        ? '0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3)'
+                        : '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                      backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
                       transition: "0.3s",
-                      "&:hover": { boxShadow: 10, transform: "translateY(-5px)" },
+                      "&:hover": { 
+                        boxShadow: theme.palette.mode === 'dark'
+                          ? '0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4)'
+                          : '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+                        transform: "translateY(-5px)" 
+                      },
                     }}
                   >
                     <CardContent
@@ -155,13 +224,14 @@ function Saved() {
                         flexDirection: "column",
                         textAlign: "left",
                         overflow: "hidden",
+                        color: theme.palette.text.primary,
                       }}
                     >
-                      <Typography variant="h6" gutterBottom>
+                      <Typography variant="h6" gutterBottom sx={{ color: theme.palette.text.primary }}>
                         <TruncatedText text={topic.title || "No Title"} limit={30} />
                       </Typography>
 
-                      <Box display="flex" mb={1} color="text.secondary">
+                      <Box display="flex" mb={1} color={theme.palette.text.secondary}>
                         <Typography variant="body2">
                           Created At:{" "}
                           {new Date(topic.createdAt || Date.now()).toLocaleString("en-GB", {
